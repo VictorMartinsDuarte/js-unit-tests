@@ -40,8 +40,8 @@ describe('6 - Implemente os casos de teste para a função `productDetails`', ()
     assert.deepStrictEqual(productDetails('a', 'b').length, 2, 'Tamanho do array diferente do esperado.');
 
     // Teste que os dois itens dentro do array retornado pela função são objetos.
-    assert.deepStrictEqual(typeof(productDetails('a', 'b')[0]), 'object', 'Não retornou o tipo objeto.');
-    assert.deepStrictEqual(typeof(productDetails('a', 'b')[1]), 'object', 'Não retornou o tipo objeto.');
+    assert.deepStrictEqual(typeof(productDetails('a', 'b')[0]), 'object', 'Primeiro item não retornou o tipo objeto.');
+    assert.deepStrictEqual(typeof(productDetails('a', 'b')[1]), 'object', 'Segundo item não retornou o tipo objeto.');
 
     // Teste que os dois objetos são diferentes entre si.
     let isDiff = productDetails('a', 'b')[0] !== productDetails('a', 'b')[1];

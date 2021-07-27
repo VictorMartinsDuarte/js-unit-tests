@@ -1,4 +1,4 @@
-/* eslint-disable no-var */
+/* eslint-disable no-let */
 /* eslint-disable block-scoped-var */
 /* eslint-disable no-redeclare */
 /* eslint-disable vars-on-top */
@@ -16,11 +16,11 @@
 */
 
 const myCounter = () => {
-  var myArray = [];
-  for (var counter = 0; counter <= 3; counter += 1) {
-    myArray.push(counter);
-    for (var counter = 2; counter <= 3; counter += 1) {
-      myArray.push(counter);
+  const myArray = [];
+  for (let first = 0; first <= 3; first += 1) {
+    myArray.push(first);
+    for (let second = 2; second <= 3; second += 1) {
+      myArray.push(second);
     }
   }
   return myArray;
