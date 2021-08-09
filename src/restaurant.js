@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-const { TestWatcher } = require("jest");
+const { TestWatcher } = require('jest');
 
 /*
   Você é responsável por escrever o código do sistema de pedidos de um restaurante. Deve ser possível, através desse sistema, 
