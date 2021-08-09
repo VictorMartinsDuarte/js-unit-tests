@@ -63,6 +63,6 @@ describe('9 - Implemente os casos de teste da função `getCharacter`', () => {
     assert.deepStrictEqual(getCharacter('ARYA'), { name: 'Arya Stark', class: 'Rogue', phrases: [ 'Not today', 'A girl has no name.' ] }, 'Não retornou o valor esperado com o parâmetro de caixa alta.');
 
     // Teste se ao passar um nome que não está na tabela, a função retorna undefined.
-    assert.strictEqual(getCharacter('Teste'), undefined, 'Parâmetro não faz parte dos nomes aceitos.');
+    assert.strictEqual(getCharacter('Victor'), undefined, 'Parâmetro não faz parte dos nomes aceitos.');
   });
 });

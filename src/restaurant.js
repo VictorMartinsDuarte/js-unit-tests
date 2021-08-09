@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 
+const { TestWatcher } = require("jest");
+
 /*
   Você é responsável por escrever o código do sistema de pedidos de um restaurante. Deve ser possível, através desse sistema, 
   cadastrar um menu. Dado que um menu foi cadastrado, o sistema deve disponibilizar um objeto através do qual se consegue:
@@ -46,15 +48,25 @@
 */
 
 // PASSO 1: Crie uma função `createMenu()` que, dado um objeto passado por parâmetro, retorna um objeto com o seguinte formato: { fetchMenu: () => objetoPassadoPorParametro }.
+
+// const createMenu = (menu) => ({ fetchMenu: () => menu });
+
+// const objetoMenu = { food: {}, drink: {} };
+// console.log(createMenu(objetoMenu));
 //
 // Agora faça o TESTE 4 no arquivo `tests/restaurant.spec.js`.
 
 //------------------------------------------------------------------------------------------
 
 // PASSO 2: Adicione ao objeto retornado por `createMenu` uma chave `consumption` que, como valor inicial, tem um array vazio.
+// const createMenu = (menu) => (
+//   {
+//     fetchMenu: () => menu,
+//     consumption: [], 
+//   }
+// );
 //
 // Agora faça o TESTE 5 no arquivo `tests/restaurant.spec.js`.
-
 //------------------------------------------------------------------------------------------
 
 // PASSO 3: Crie uma função, separada da função `createMenu()`, que, dada uma string recebida por parâmetro, 
@@ -70,6 +82,17 @@
 //
 // const orderFromMenu = (request) => // Lógica que adiciona à chave `consumption` de `restaurant` a string recebida no parâmetro `request`. 
 // // Essa função deve ser associada à chave `order` de `restaurant`
+// const restaurant = {};
+// const createMenu = (menu) => {
+//   restaurant.fetchMenu = () => menu;
+//   restaurant.consumption = [];
+//   restaurant.order = (string) => restaurant.consumption.push(string);
+//   return restaurant;
+// };
+// createMenu({ food: {}, drink: {} });
+// restaurant.order('coxinha');
+// console.log(restaurant.consumption);
+
 // ```
 // Agora faça o TESTE 6 no arquivo `tests/restaurant.spec.js`.
 
@@ -78,7 +101,30 @@
 // PASSO 4: Adicione ao objeto retornado por `createMenu()` uma chave `pay` com uma função que varre todo os itens de `objetoRetornado.consumption`, 
 // soma o preço de todos checando-os no menu e retorna o valor somado acrescido de 10%. DICA: para isso, 
 // você precisará varrer tanto o objeto da chave `food` quanto o objeto da chave `drink`.
-
-const createMenu = () => {};
+const restaurant = {};
+const createMenu = (menuUpdate) => {
+  const menu = !menuUpdate ? { food: {}, drink: {} } : menuUpdate;
+  restaurant.fetchMenu = () => menu;
+  restaurant.consumption = [];
+  restaurant.order = (string) => restaurant.consumption.push(string);
+  restaurant.items = { ...restaurant.fetchMenu().food, ...restaurant.fetchMenu().drink };
+  restaurant.pay = () => {
+    let result = 0;
+    for (let index = 0; index < restaurant.consumption.length; index += 1) {
+      result += restaurant.items[restaurant.consumption[index]];
+    }
+    return result;
+  };
+  return restaurant;
+};
+// const restaurant = 
+createMenu({ food: { coxinha: 5 }, drink: { agua: 3 } });
+restaurant.order('coxinha');
+restaurant.order('agua');
+restaurant.order('coxinha');
+restaurant.pay();
+console.log(restaurant.items);
+// console.log(restaurant.pay());
+// const createMenu = () => {};
 
 module.exports = createMenu;

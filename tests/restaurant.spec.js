@@ -1,4 +1,6 @@
 const assert = require('assert');
+const { O_DIRECTORY } = require('constants');
+const { waitForDebugger } = require('inspector');
 const createMenu = require('../src/restaurant');
  
 /*
@@ -48,22 +50,29 @@ const createMenu = require('../src/restaurant');
 
 describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
   it('Verifica se a função `createMenu` tem o comportamento esperado', () => {
-    assert.fail();
+    // assert.fail();
     // TESTE 1: Verifique se o retorno da função createMenu() é um objeto que possui, 
     // mas não é necessariamente é limitado à chave `fetchMenu`, a qual tem como valor uma função.
     // ```
     // const objetoRetornado = createMenu(); // Retorno: { fetchMenu: () => {}, ... }
+    assert.deepStrictEqual(Object.keys(createMenu()).includes('fetchMenu'), true,
+      'fetchMenu não está incluso nas chaves de createMenu');
     // ```
     // TESTE 2: Verifique que, dado que a função createMenu foi chamada com o objeto: `{ food: {}, drink: {} }`, 
     // verifique que 'objetoRetornado.fetchMenu()' retorna um objeto cujas chaves são somente `food` e `drink`.
     // ```
     // const objetoRetornado = createMenu({ food: {}, drink: {} });
     // objetoRetornado.fetchMenu() // Retorno: { food: {}, drink: {}}
+    const fetchMenuKeys = Object.keys(createMenu({ food: {}, drink: {} }).fetchMenu());
+    assert.deepStrictEqual(fetchMenuKeys, ['food', 'drink'], 'O retorno do menu não está correto');
     // ```
     // TESTE 3: Verifique que o menu passado pra função createMenu é identico ao menu recuperado pela função 'objetoRetornado.fetchMenu'
     // ```
     // const objetoRetornado = createMenu(objetoQualquer);
     // objetoRetornado.fetchMenu() // Retorno: objetoQualquer
+    const objetoMenu = { food: {}, drink: {}, };
+    assert.deepStrictEqual(createMenu(objetoMenu).fetchMenu(), objetoMenu,
+      'O retorno deve ser idêntico ao objeto que foi passado como parâmetro.');
     // ```
     // Agora faça o PASSO 1 no arquivo `src/restaurant.js`.
     // --------------------------------------------------------------------------------------
@@ -71,6 +80,8 @@ describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
     // ```
     // const objetoRetornado = createMenu(objetoQualquer);
     // objetoRetornado.consumption // Retorno: []
+    assert.deepStrictEqual(createMenu(objetoMenu).consumption, [],
+      'Deveria retornar um array vazio.');
     // ```
     // Agora faça o PASSO 2 no arquivo `src/restaurant.js`.
     // --------------------------------------------------------------------------------------
@@ -81,6 +92,13 @@ describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
     // objetoRetornado.order("coxinha");
     // objetoRetornado.consumption // Retorno: ["coxinha"]
     // ```
+
+    let restaurant = createMenu({ food: {}, drink: {} });
+    const item = 'coxinha';
+    createMenu().order(item);
+    assert.deepStrictEqual(restaurant.consumption, ['coxinha'],
+      'A order não foi adicionada corretamente à consumption');
+
     // Agora faça o PASSO 3 no arquivo `src/restaurant.js`.
     // --------------------------------------------------------------------------------------
     // TESTE 6: Verifique que as três orders seguintes, de bebidas e comidas mescladas, somam três itens no array `objetoRetornado.consumption` conforme os itens pedidos.
@@ -90,6 +108,13 @@ describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
     // objetoRetornado.order("sopa");
     // objetoRetornado.order("sashimi");
     // objetoRetornado.consumption // Retorno: ["coxinha", "agua", "sopa", "sashimi"]
+    restaurant = createMenu({ food: {}, drink: {} });
+    restaurant.order('coxinha');
+    restaurant.order('agua');
+    restaurant.order('sopa');
+    restaurant.order('sashimi');
+    assert.deepStrictEqual(restaurant.consumption,
+        ['coxinha', 'agua', 'sopa', 'sashimi'], 'Retorno diferente do esperado.');
     // ```
     // Agora faça o TESTE 7 deste arquivo.
     // --------------------------------------------------------------------------------------
@@ -99,6 +124,12 @@ describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
     // objetoRetornado.order('agua');
     // objetoRetornado.order('coxinha');
     // objetoRetornado.comsuption // Retorno: ['coxinha', 'agua', 'coxinha']
+    restaurant = createMenu({ food: {}, drink: {} });
+    restaurant.order('coxinha');
+    restaurant.order('agua');
+    restaurant.order('coxinha');
+    assert.deepStrictEqual(restaurant.consumption,
+        ['coxinha', 'agua', 'coxinha'], 'Retorno diferente do esperado.');
     // ```
     // Agora faça o TESTE 8 deste arquivo.
     // --------------------------------------------------------------------------------------
@@ -108,6 +139,12 @@ describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
     // objetoRetornado.order('agua');
     // objetoRetornado.order('coxinha');
     // objetoRetornado.pay() // Retorno: somaDosPreçosDosPedidos
+    restaurant = createMenu({ food: { coxinha: 5 }, drink: { agua: 3 } });
+    restaurant.order('coxinha');
+    restaurant.order('agua');
+    restaurant.order('coxinha');
+    assert.deepStrictEqual(restaurant.pay(),
+        13, 'Retorno diferente do esperado.');
     // ```
     // Agora faça o PASSO 4 no arquivo `src/restaurant.js`.
   });
